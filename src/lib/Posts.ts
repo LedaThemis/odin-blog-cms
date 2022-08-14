@@ -123,3 +123,32 @@ export const togglePostPublished = async ({ post }: { post: PostType }) => {
         return res;
     }
 };
+
+export const deletePost = async ({ id }: { id: string }) => {
+    if (!isLoggedIn()) {
+        return {
+            state: 'failed',
+            errors: [{ msg: 'You are not logged in.' }],
+        };
+    }
+
+    try {
+        const res = await fetch(
+            `${process.env.REACT_APP_BASE_URL}/posts/${id}`,
+            {
+                method: 'delete',
+                headers: {
+                    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                    Authorization: localStorage.getItem('token')!,
+                },
+            },
+        );
+
+        return res;
+    } catch {
+        return {
+            state: 'failed',
+            errors: [{ msg: 'An error occurred while processing request.' }],
+        };
+    }
+};

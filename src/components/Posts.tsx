@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
+import { deletePost } from '../lib/Posts';
 import { getUserPosts } from '../lib/Users';
 import { PostsResponse } from '../typings';
 import Errors from './Errors';
@@ -8,13 +9,20 @@ import PreviewPost from './PreviewPost';
 
 const Posts = () => {
     const [response, setResponse] = useState<PostsResponse>();
+    const [refetch, setRefetch] = useState(false);
 
     useEffect(() => {
         (async () => {
             const res: PostsResponse = await getUserPosts();
             setResponse(res);
         })();
-    }, []);
+    }, [refetch]);
+
+    const handlePostDelete = async (id: string) => {
+        await deletePost({ id });
+
+        setRefetch(!refetch);
+    };
 
     const getOulet = () => {
         if (response && response.state === 'failed') {
@@ -30,7 +38,11 @@ const Posts = () => {
                         <p>You have no posts</p>
                     ) : (
                         response.posts.map((post) => (
-                            <PreviewPost key={post._id} post={post} />
+                            <PreviewPost
+                                key={post._id}
+                                post={post}
+                                handleDelete={() => handlePostDelete(post._id)}
+                            />
                         ))
                     )}
                 </StyledPostsContainer>

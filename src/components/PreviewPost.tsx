@@ -1,13 +1,13 @@
 import { useState } from 'react';
-import { BsPencilFill } from 'react-icons/bs';
+import { BsFillTrashFill, BsPencilFill } from 'react-icons/bs';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { togglePostPublished } from '../lib/Posts';
+import {  togglePostPublished } from '../lib/Posts';
 import { StyledButton } from '../styled/StyledButton';
 import { PostType } from '../typings';
 
-const PreviewPost = ({ post }: { post: PostType }) => {
+const PreviewPost = ({ post, handleDelete }: { post: PostType, handleDelete: () => void }) => {
     const [currentPost, setCurrentPost] = useState<PostType>(post);
     const navigate = useNavigate();
 
@@ -21,6 +21,7 @@ const PreviewPost = ({ post }: { post: PostType }) => {
 
     return (
         <StyledPost>
+            <StyledPostDeleteButton onClick={handleDelete} />
             <StyledPostEditButton
                 onClick={() => navigate(`/posts/${currentPost._id}/edit`)}
             />
@@ -40,6 +41,11 @@ const PreviewPost = ({ post }: { post: PostType }) => {
 };
 
 const StyledPublishButton = styled(StyledButton)``;
+
+const StyledPostDeleteButton = styled(BsFillTrashFill)`
+    cursor: pointer;
+    position: absolute;
+`;
 
 const StyledPostEditButton = styled(BsPencilFill)`
     cursor: pointer;
