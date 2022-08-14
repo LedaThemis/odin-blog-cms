@@ -111,7 +111,7 @@ export const getPost = async ({
     }
 };
 
-export const togglePostPublished = async ({ post }: { post: PostType }) => {
+export const togglePostPublished = async ({ post }: { post: PostType }): Promise<UpdatePostResponse> => {
     const res: UpdatePostResponse = await updatePost({
         title: post.title,
         content: post.content,
@@ -119,9 +119,7 @@ export const togglePostPublished = async ({ post }: { post: PostType }) => {
         isPublished: `${!post.isPublished}`,
     });
 
-    if (res.state === 'success') {
-        return res;
-    }
+    return res;
 };
 
 export const deletePost = async ({ id }: { id: string }) => {

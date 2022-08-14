@@ -3,18 +3,23 @@ import { BsFillTrashFill, BsPencilFill } from 'react-icons/bs';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
-import {  togglePostPublished } from '../lib/Posts';
+import { togglePostPublished } from '../lib/Posts';
 import { StyledButton } from '../styled/StyledButton';
 import { PostType } from '../typings';
 
-const PreviewPost = ({ post, handleDelete }: { post: PostType, handleDelete: () => void }) => {
+interface IPreviewPost {
+    post: PostType;
+    handleDelete: () => void;
+}
+
+const PreviewPost = ({ post, handleDelete }: IPreviewPost) => {
     const [currentPost, setCurrentPost] = useState<PostType>(post);
     const navigate = useNavigate();
 
-    const handleClick = async () => {
+    const handlePublishClick = async () => {
         const updatedPost = await togglePostPublished({ post: currentPost });
 
-        if (updatedPost && updatedPost.state === 'success') {
+        if (updatedPost.state === 'success') {
             setCurrentPost(updatedPost.post);
         }
     };
@@ -33,7 +38,7 @@ const PreviewPost = ({ post, handleDelete }: { post: PostType, handleDelete: () 
             <StyledP>
                 Updated: {new Date(currentPost.updatedAt).toLocaleDateString()}
             </StyledP>
-            <StyledPublishButton onClick={handleClick}>
+            <StyledPublishButton onClick={handlePublishClick}>
                 {currentPost.isPublished ? 'Unpublish' : 'Publish'}
             </StyledPublishButton>
         </StyledPost>
