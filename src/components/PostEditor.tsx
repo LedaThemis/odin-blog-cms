@@ -77,6 +77,9 @@ const PostEditor = ({
                 initialValue={initialContent}
                 // @ts-ignore
                 onInit={(evt, editor) => (editorRef.current = editor)}
+                init={{
+                    plugins: 'preview',
+                }}
             />
             <StyledButton onClick={save}>{buttonName}</StyledButton>
             {errors && <Errors errors={errors} />}
