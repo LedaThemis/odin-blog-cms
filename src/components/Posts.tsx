@@ -3,41 +3,49 @@ import styled from 'styled-components';
 
 import { deletePost } from '../lib/Posts';
 import { getUserPosts } from '../lib/Users';
-import { PostsResponse } from '../typings';
+import { ErrorType, PostType, PostsResponse } from '../typings';
 import Errors from './Errors';
 import PreviewPost from './PreviewPost';
 
 const Posts = () => {
-    const [response, setResponse] = useState<PostsResponse>();
-    const [refetch, setRefetch] = useState(false);
+    const [posts, setPosts] = useState<PostType[]>();
+    const [errors, setErrors] = useState<ErrorType[]>();
 
     useEffect(() => {
         (async () => {
             const res: PostsResponse = await getUserPosts();
-            setResponse(res);
+
+            switch (res.state) {
+                case 'success':
+                    setPosts(res.posts);
+                    break;
+                case 'failed':
+                    setErrors(res.errors);
+                    break;
+            }
         })();
-    }, [refetch]);
+    }, []);
 
     const handlePostDelete = async (id: string) => {
         await deletePost({ id });
 
-        setRefetch(!refetch);
+        setPosts(posts?.filter((post) => post._id === id));
     };
 
     const getOulet = () => {
-        if (response && response.state === 'failed') {
+        if (errors) {
             return (
                 <div>
-                    <Errors errors={response.errors} />
+                    <Errors errors={errors} />
                 </div>
             );
-        } else if (response && response.state === 'success') {
+        } else if (posts) {
             return (
                 <StyledPostsContainer>
-                    {response.posts.length === 0 ? (
+                    {posts.length === 0 ? (
                         <p>You have no posts</p>
                     ) : (
-                        response.posts.map((post) => (
+                        posts.map((post) => (
                             <PreviewPost
                                 key={post._id}
                                 post={post}
