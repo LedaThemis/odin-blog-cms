@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { login } from '../lib/Users';
+import { StyledSubmitButton } from '../styled/StyledSubmitButton';
 import { AccessResponse } from '../typings';
 import Errors from './Errors';
 
@@ -79,12 +80,6 @@ const StyledLoginForm = styled.form`
 const StyledLabel = styled.label`
     display: flex;
     flex-direction: column;
-`;
-
-const StyledSubmitButton = styled.button`
-    background-color: transparent;
-    border: 1px solid black;
-    cursor: pointer;
 `;
 
 export default LoginForm;
