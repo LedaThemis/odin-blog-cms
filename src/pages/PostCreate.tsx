@@ -6,7 +6,7 @@ const PostCreate = () => {
     return (
         <StyledContainer>
             <h1>Create Post</h1>
-            <PostEditor initialTitle="" initialContent="" />
+            <PostEditor initialTitle="" initialContent="" buttonName='Create Post' operation='create' />
         </StyledContainer>
     );
 };

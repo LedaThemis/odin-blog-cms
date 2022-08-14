@@ -6,6 +6,7 @@ import Home from './pages/Home';
 import Login from './pages/Login';
 import Logout from './pages/Logout';
 import PostCreate from './pages/PostCreate';
+import PostEdit from './pages/PostEdit';
 
 function App() {
     return (
@@ -19,6 +20,9 @@ function App() {
                         <Route path="logout" element={<Logout />}></Route>
                         <Route path="posts">
                             <Route path="create" element={<PostCreate />} />
+                            <Route path=":postId">
+                                <Route path="edit" element={<PostEdit />} />
+                            </Route>
                         </Route>
                     </Route>
                 </Routes>

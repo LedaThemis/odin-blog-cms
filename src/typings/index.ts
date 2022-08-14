@@ -15,13 +15,15 @@ export type AccessDetails = {
 };
 
 type FailResponse = {
-    errors?: ErrorType[];
+    state: 'failed';
+    errors: ErrorType[];
 };
 
 type AccessSuccessResponse = {
-    token?: string;
-    expiresIn?: string;
-    userId?: string;
+    state: 'success';
+    token: string;
+    expiresIn: string;
+    userId: string;
 };
 
 export interface APIUser {
@@ -30,6 +32,7 @@ export interface APIUser {
 }
 
 export type PostType = {
+    state: 'success';
     _id: string;
     title: string;
     author: APIUser;
@@ -42,16 +45,26 @@ export type PostType = {
 };
 
 type PostsSuccessResponse = {
-    posts?: PostType[];
+    state: 'success';
+    posts: PostType[];
 };
 
-export type PostsResponse = PostsSuccessResponse & FailResponse;
+export type PostsResponse = PostsSuccessResponse | FailResponse;
 
-export type AccessResponse = AccessSuccessResponse & FailResponse;
+export type AccessResponse = AccessSuccessResponse | FailResponse;
 
 export interface PostInput {
-    title?: string;
-    content?: string;
+    title: string;
+    content: string;
 }
 
-export type CreatePostResponse = PostType & FailResponse;
+export type CreatePostResponse = PostType | FailResponse;
+
+export interface PostGetSuccessResponse {
+    state: 'success';
+    post: PostType;
+}
+
+export type GetPostResponse = PostGetSuccessResponse | FailResponse;
+
+export type UpdatePostResponse = CreatePostResponse;
