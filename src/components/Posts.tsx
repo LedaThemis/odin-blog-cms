@@ -67,7 +67,7 @@ const StyledContainer = styled.div`
 const StyledPostsContainer = styled.div`
     display: grid;
     place-content: center;
-    grid-template-columns: repeat(auto-fit, 250px);
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 16px;
     width: 100%;
 `;
