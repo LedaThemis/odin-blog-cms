@@ -6,7 +6,7 @@ import styled from 'styled-components';
 
 import { createPost, updatePost } from '../lib/Posts';
 import { StyledButton } from '../styled/StyledButton';
-import { CreatePostResponse, UpdatePostResponse } from '../typings';
+import { ErrorType } from '../typings';
 import Errors from './Errors';
 
 const PostEditor = ({
@@ -20,13 +20,13 @@ const PostEditor = ({
     buttonName: string;
     operation: 'create' | 'update';
 }) => {
-    const editorRef = useRef<Editor | null>(null);
-    const [response, setResponse] = useState<
-        CreatePostResponse | UpdatePostResponse
-    >();
-    const [title, setTitle] = useState(initialTitle);
     const { postId } = useParams();
     const navigate = useNavigate();
+
+    const [errors, setErrors] = useState<ErrorType[]>();
+    const [title, setTitle] = useState(initialTitle);
+
+    const editorRef = useRef<Editor | null>(null);
 
     const save = () => {
         if (editorRef.current) {
@@ -39,7 +39,10 @@ const PostEditor = ({
             (async () => {
                 if (operation === 'create') {
                     const res = await createPost({ title, content });
-                    setResponse(res);
+
+                    if (res.state === 'failed') {
+                        setErrors(res.errors);
+                    }
                 } else if (operation === 'update' && postId) {
                     const res = await updatePost({
                         title,
@@ -47,7 +50,9 @@ const PostEditor = ({
                         id: postId,
                     });
 
-                    setResponse(res);
+                    if (res.state === 'failed') {
+                        setErrors(res.errors);
+                    }
                 }
 
                 navigate('/');
@@ -74,9 +79,7 @@ const PostEditor = ({
                 onInit={(evt, editor) => (editorRef.current = editor)}
             />
             <StyledButton onClick={save}>{buttonName}</StyledButton>
-            {response && response.state === 'failed' && (
-                <Errors errors={response.errors} />
-            )}
+            {errors && <Errors errors={errors} />}
         </StyledContainer>
     );
 };
