@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import { login } from '../lib/Users';
 import { StyledSubmitButton } from '../styled/StyledSubmitButton';
-import { AccessResponse } from '../typings';
+import { AccessResponse, ErrorType } from '../typings';
 import Errors from './Errors';
 
 const LoginForm = () => {
@@ -14,7 +14,7 @@ const LoginForm = () => {
     };
 
     const [formData, setFormData] = useState(initialFormData);
-    const [response, setResponse] = useState<AccessResponse>();
+    const [errors, setErrors] = useState<ErrorType[]>();
 
     const navigate = useNavigate();
 
@@ -34,10 +34,13 @@ const LoginForm = () => {
             password: formData.password,
         });
 
-        setResponse(res);
-
-        if (res && res.state === 'success') {
-            navigate('/');
+        switch (res.state) {
+            case 'success':
+                navigate('/');
+                break;
+            case 'failed':
+                setErrors(res.errors);
+                break;
         }
     };
 
@@ -64,9 +67,7 @@ const LoginForm = () => {
                 </StyledLabel>
                 <StyledSubmitButton type="submit">Login</StyledSubmitButton>
             </StyledLoginForm>
-            {response && response.state === 'failed' && (
-                <Errors errors={response.errors}></Errors>
-            )}
+            {errors && <Errors errors={errors}></Errors>}
         </div>
     );
 };
