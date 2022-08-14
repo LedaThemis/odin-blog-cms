@@ -1,6 +1,11 @@
 import ms from 'ms';
 
-import { AccessDetails, AccessResponse } from '../typings';
+import {
+    APIUser,
+    AccessDetails,
+    AccessResponse,
+    PostsResponse,
+} from '../typings';
 
 export const login = async ({ username, password }: AccessDetails) => {
     try {
@@ -17,7 +22,7 @@ export const login = async ({ username, password }: AccessDetails) => {
             })
         ).json();
 
-        if (res.token && res.expiresIn) {
+        if (res.token && res.expiresIn && res.userId) {
             const expiresAt = Date.now() + ms(res.expiresIn);
 
             localStorage.setItem('token', 'Bearer ' + res.token);
@@ -25,6 +30,7 @@ export const login = async ({ username, password }: AccessDetails) => {
                 'expiresAt',
                 JSON.stringify(expiresAt.valueOf()),
             );
+            localStorage.setItem('userId', res.userId);
         }
 
         return res;
@@ -39,7 +45,8 @@ export const isLoggedIn = () => {
     try {
         if (
             !localStorage.getItem('token') ||
-            !localStorage.getItem('expiresAt')
+            !localStorage.getItem('expiresAt') ||
+            !localStorage.getItem('userId')
         ) {
             return false;
         }
@@ -56,4 +63,60 @@ export const isLoggedIn = () => {
 export const logout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('expiresAt');
+};
+
+export const getUser = async () => {
+    try {
+        const CURRENT_USER_ID = localStorage.getItem('userId');
+
+        const user: APIUser = await (
+            await fetch(
+                `${process.env.REACT_APP_BASE_URL}/users/${CURRENT_USER_ID}/`,
+                {
+                    method: 'get',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                },
+            )
+        ).json();
+
+        return user;
+    } catch {
+        return {
+            errors: [{ msg: 'An error occurred while processing request.' }],
+        };
+    }
+};
+
+export const getUserPosts = async () => {
+    if (!isLoggedIn()) {
+        return {
+            errors: [{ msg: 'You are not logged in.' }],
+        };
+    }
+
+    try {
+        const CURRENT_USER_ID = localStorage.getItem('userId');
+
+        const res: PostsResponse = await (
+            await fetch(
+                `${process.env.REACT_APP_BASE_URL}/users/${CURRENT_USER_ID}/posts`,
+                {
+                    method: 'get',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                        Authorization: localStorage.getItem('token')!,
+                    },
+                },
+            )
+        ).json();
+
+        return res;
+    } catch {
+        return {
+            errors: [{ msg: 'An error occurred while processing request.' }],
+        };
+    }
 };

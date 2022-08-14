@@ -1,9 +1,19 @@
+import styled from 'styled-components';
+
+import Posts from '../components/Posts';
+
 const Home = () => {
     return (
-        <div>
-            <h1>Home Page</h1>
-        </div>
+        <StyledHome>
+            <h1>Dashboard</h1>
+            <Posts />
+        </StyledHome>
     );
 };
+
+const StyledHome = styled.div`
+    display: grid;
+    text-align: center;
+`;
 
 export default Home;
