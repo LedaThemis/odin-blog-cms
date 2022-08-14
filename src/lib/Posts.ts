@@ -1,6 +1,7 @@
 import {
     CreatePostResponse,
     GetPostResponse,
+    PostGetSuccessResponse,
     PostInput,
     PostType,
     UpdatePostResponse,
@@ -43,8 +44,12 @@ export const createPost = async ({
 export const updatePost = async ({
     title,
     content,
+    isPublished,
     id,
-}: PostInput & { id: string }): Promise<UpdatePostResponse> => {
+}: PostInput & {
+    id: string;
+    isPublished?: string;
+}): Promise<UpdatePostResponse> => {
     if (!isLoggedIn()) {
         return {
             state: 'failed',
@@ -52,8 +57,14 @@ export const updatePost = async ({
         };
     }
 
+    const body: { isPublished?: string } = {};
+
+    if (isPublished) {
+        body.isPublished = isPublished;
+    }
+
     try {
-        const response: PostType = await (
+        const response: PostGetSuccessResponse = await (
             await fetch(`${process.env.REACT_APP_BASE_URL}/posts/${id}`, {
                 method: 'put',
                 headers: {
@@ -61,7 +72,7 @@ export const updatePost = async ({
                     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
                     Authorization: localStorage.getItem('token')!,
                 },
-                body: JSON.stringify({ title, content }),
+                body: JSON.stringify({ title, content, ...body }),
             })
         ).json();
 
@@ -97,5 +108,18 @@ export const getPost = async ({
             state: 'failed',
             errors: [{ msg: 'An error occurred while processing request.' }],
         };
+    }
+};
+
+export const togglePostPublished = async ({ post }: { post: PostType }) => {
+    const res: UpdatePostResponse = await updatePost({
+        title: post.title,
+        content: post.content,
+        id: post._id,
+        isPublished: `${!post.isPublished}`,
+    });
+
+    if (res.state === 'success') {
+        return res;
     }
 };

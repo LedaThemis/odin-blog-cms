@@ -1,28 +1,45 @@
+import { useState } from 'react';
 import { BsPencilFill } from 'react-icons/bs';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
+import { togglePostPublished } from '../lib/Posts';
+import { StyledButton } from '../styled/StyledButton';
 import { PostType } from '../typings';
 
 const PreviewPost = ({ post }: { post: PostType }) => {
+    const [currentPost, setCurrentPost] = useState<PostType>(post);
     const navigate = useNavigate();
+
+    const handleClick = async () => {
+        const updatedPost = await togglePostPublished({ post: currentPost });
+
+        if (updatedPost && updatedPost.state === 'success') {
+            setCurrentPost(updatedPost.post);
+        }
+    };
 
     return (
         <StyledPost>
             <StyledPostEditButton
-                onClick={() => navigate(`/posts/${post._id}/edit`)}
+                onClick={() => navigate(`/posts/${currentPost._id}/edit`)}
             />
-            <StyledH3>{post.title}</StyledH3>
-            <StyledP>Author: {post.author.username}</StyledP>
+            <StyledH3>{currentPost.title}</StyledH3>
+            <StyledP>Author: {currentPost.author.username}</StyledP>
             <StyledP>
-                Created: {new Date(post.createdAt).toLocaleDateString()}
+                Created: {new Date(currentPost.createdAt).toLocaleDateString()}
             </StyledP>
             <StyledP>
-                Updated: {new Date(post.updatedAt).toLocaleDateString()}
+                Updated: {new Date(currentPost.updatedAt).toLocaleDateString()}
             </StyledP>
+            <StyledPublishButton onClick={handleClick}>
+                {currentPost.isPublished ? 'Unpublish' : 'Publish'}
+            </StyledPublishButton>
         </StyledPost>
     );
 };
+
+const StyledPublishButton = styled(StyledButton)``;
 
 const StyledPostEditButton = styled(BsPencilFill)`
     cursor: pointer;
@@ -35,6 +52,7 @@ const StyledPost = styled.div`
     flex-direction: column;
     padding: 16px;
     border: 1px solid black;
+    gap: 6px;
 `;
 
 const StyledH3 = styled.h3`

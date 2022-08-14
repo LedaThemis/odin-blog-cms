@@ -67,4 +67,4 @@ export interface PostGetSuccessResponse {
 
 export type GetPostResponse = PostGetSuccessResponse | FailResponse;
 
-export type UpdatePostResponse = CreatePostResponse;
+export type UpdatePostResponse = GetPostResponse;
