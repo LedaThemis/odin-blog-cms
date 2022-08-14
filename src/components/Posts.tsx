@@ -29,7 +29,7 @@ const Posts = () => {
     const handlePostDelete = async (id: string) => {
         await deletePost({ id });
 
-        setPosts(posts?.filter((post) => post._id === id));
+        setPosts(posts?.filter((post) => post._id !== id));
     };
 
     const getOulet = () => {
