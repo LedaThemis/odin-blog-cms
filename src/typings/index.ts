@@ -48,3 +48,10 @@ type PostsSuccessResponse = {
 export type PostsResponse = PostsSuccessResponse & FailResponse;
 
 export type AccessResponse = AccessSuccessResponse & FailResponse;
+
+export interface PostInput {
+    title?: string;
+    content?: string;
+}
+
+export type CreatePostResponse = PostType & FailResponse;
