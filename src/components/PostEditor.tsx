@@ -60,7 +60,7 @@ const PostEditor = ({
             <StyledButton onClick={save} disabled={!dirty}>
                 Create Post
             </StyledButton>
-            {response && response.errors && <Errors errors={response.errors} />}
+            {response && response.state === 'failed' && <Errors errors={response.errors} />}
         </StyledContainer>
     );
 };

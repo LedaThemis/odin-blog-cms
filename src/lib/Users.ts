@@ -7,7 +7,10 @@ import {
     PostsResponse,
 } from '../typings';
 
-export const login = async ({ username, password }: AccessDetails) => {
+export const login = async ({
+    username,
+    password,
+}: AccessDetails): Promise<AccessResponse> => {
     try {
         const res: AccessResponse = await (
             await fetch(`${process.env.REACT_APP_BASE_URL}/users/login`, {
@@ -22,7 +25,7 @@ export const login = async ({ username, password }: AccessDetails) => {
             })
         ).json();
 
-        if (res.token && res.expiresIn && res.userId) {
+        if (res.state === 'success') {
             const expiresAt = Date.now() + ms(res.expiresIn);
 
             localStorage.setItem('token', 'Bearer ' + res.token);
@@ -36,6 +39,7 @@ export const login = async ({ username, password }: AccessDetails) => {
         return res;
     } catch {
         return {
+            state: 'failed',
             errors: [{ msg: 'An error occurred while submitting request.' }],
         };
     }
@@ -63,6 +67,7 @@ export const isLoggedIn = () => {
 export const logout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('expiresAt');
+    localStorage.removeItem('userId');
 };
 
 export const getUser = async () => {
@@ -84,14 +89,16 @@ export const getUser = async () => {
         return user;
     } catch {
         return {
+            state: 'failed',
             errors: [{ msg: 'An error occurred while processing request.' }],
         };
     }
 };
 
-export const getUserPosts = async () => {
+export const getUserPosts = async (): Promise<PostsResponse> => {
     if (!isLoggedIn()) {
         return {
+            state: 'failed',
             errors: [{ msg: 'You are not logged in.' }],
         };
     }
@@ -116,6 +123,7 @@ export const getUserPosts = async () => {
         return res;
     } catch {
         return {
+            state: 'failed',
             errors: [{ msg: 'An error occurred while processing request.' }],
         };
     }

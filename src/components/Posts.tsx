@@ -7,23 +7,23 @@ import Errors from './Errors';
 import PreviewPost from './PreviewPost';
 
 const Posts = () => {
-    const [response, setResponse] = useState<PostsResponse>({});
+    const [response, setResponse] = useState<PostsResponse>();
 
     useEffect(() => {
         (async () => {
-            const res = await getUserPosts();
+            const res: PostsResponse = await getUserPosts();
             setResponse(res);
         })();
     }, []);
 
     const getOulet = () => {
-        if (response.errors) {
+        if (response && response.state === 'failed') {
             return (
                 <div>
                     <Errors errors={response.errors} />
                 </div>
             );
-        } else if (response.posts) {
+        } else if (response && response.state === 'success') {
             return (
                 <StyledPostsContainer>
                     {response.posts.length === 0 ? (

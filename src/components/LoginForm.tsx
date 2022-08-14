@@ -14,7 +14,7 @@ const LoginForm = () => {
     };
 
     const [formData, setFormData] = useState(initialFormData);
-    const [response, setResponse] = useState<AccessResponse>({});
+    const [response, setResponse] = useState<AccessResponse>();
 
     const navigate = useNavigate();
 
@@ -29,14 +29,14 @@ const LoginForm = () => {
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        const res = await login({
+        const res: AccessResponse = await login({
             username: formData.username,
             password: formData.password,
         });
 
         setResponse(res);
 
-        if (res.token) {
+        if (res && res.state === 'success') {
             navigate('/');
         }
     };
@@ -64,7 +64,7 @@ const LoginForm = () => {
                 </StyledLabel>
                 <StyledSubmitButton type="submit">Login</StyledSubmitButton>
             </StyledLoginForm>
-            {response && response.errors && (
+            {response && response.state === 'failed' && (
                 <Errors errors={response.errors}></Errors>
             )}
         </div>
