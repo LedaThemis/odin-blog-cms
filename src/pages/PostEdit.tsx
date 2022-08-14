@@ -5,10 +5,11 @@ import styled from 'styled-components';
 import Errors from '../components/Errors';
 import PostEditor from '../components/PostEditor';
 import { getPost } from '../lib/Posts';
-import { GetPostResponse } from '../typings';
+import { ErrorType, PostType } from '../typings';
 
 const PostEdit = () => {
-    const [response, setResponse] = useState<GetPostResponse>();
+    const [post, setPost] = useState<PostType>();
+    const [errors, setErrors] = useState<ErrorType[]>();
     const { postId } = useParams();
 
     useEffect(() => {
@@ -16,25 +17,32 @@ const PostEdit = () => {
             if (postId) {
                 const res = await getPost({ id: postId });
 
-                setResponse(res);
+                switch (res.state) {
+                    case 'success':
+                        setPost(res.post);
+                        break;
+                    case 'failed':
+                        setErrors(res.errors);
+                        break;
+                }
             }
         })();
     }, []);
 
-    if (response && response.state === 'success') {
+    if (post) {
         return (
             <StyledContainer>
-                <h1>Edit Post: {response.post._id}</h1>
+                <h1>Edit Post: {post._id}</h1>
                 <PostEditor
-                    initialTitle={response.post.title}
-                    initialContent={response.post.content}
-                    buttonName='Update Post'
-                    operation='update'
+                    initialTitle={post.title}
+                    initialContent={post.content}
+                    buttonName="Update Post"
+                    operation="update"
                 />
             </StyledContainer>
         );
-    } else if (response && response.state === 'failed') {
-        return <Errors errors={response.errors} />;
+    } else if (errors) {
+        return <Errors errors={errors} />;
     } else {
         return <div>Loading</div>;
     }
