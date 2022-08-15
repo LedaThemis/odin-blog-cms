@@ -74,6 +74,7 @@ const PostEditor = ({
             </StyledLabel>
             <StyledH3>Content</StyledH3>
             <Editor
+                apiKey="kri72kvfdq03ly2nesal5i9wg3bxusfdu4bascd860lvyasm"
                 initialValue={initialContent}
                 // @ts-ignore
                 onInit={(evt, editor) => (editorRef.current = editor)}
