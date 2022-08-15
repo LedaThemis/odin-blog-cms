@@ -3,9 +3,9 @@ import { BsFillTrashFill, BsPencilFill } from 'react-icons/bs';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { togglePostPublished } from '../lib/Posts';
+import { togglePostPublished } from '@ledathemis/odin-blog-library/Posts';
 import { StyledButton } from '../styled/StyledButton';
-import { PostType } from '../typings';
+import { PostType } from '@ledathemis/odin-blog-library/typings';
 
 interface IPreviewPost {
     post: PostType;

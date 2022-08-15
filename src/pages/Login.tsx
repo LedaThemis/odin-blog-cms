@@ -2,7 +2,7 @@ import { Navigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 import LoginForm from '../components/LoginForm';
-import { isLoggedIn } from '../lib/Users';
+import { isLoggedIn } from '@ledathemis/odin-blog-library/Users';
 
 const Login = () => {
     return (

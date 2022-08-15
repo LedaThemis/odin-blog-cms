@@ -4,8 +4,8 @@ import styled from 'styled-components';
 
 import Errors from '../components/Errors';
 import PostEditor from '../components/PostEditor';
-import { getPost } from '../lib/Posts';
-import { ErrorType, PostType } from '../typings';
+import { getPost } from '@ledathemis/odin-blog-library/Posts';
+import { ErrorType, PostType } from '@ledathemis/odin-blog-library/typings';
 
 const PostEdit = () => {
     const [post, setPost] = useState<PostType>();

@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 
-import { logout } from '../lib/Users';
+import { logout } from '@ledathemis/odin-blog-library/Users';
 import { StyledSubmitButton } from '../styled/StyledSubmitButton';
 
 const LogoutPrompt = () => {

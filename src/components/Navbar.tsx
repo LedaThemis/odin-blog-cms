@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { isLoggedIn } from '../lib/Users';
+import { isLoggedIn } from '@ledathemis/odin-blog-library/Users';
 
 const Navbar = () => {
     return (

@@ -4,9 +4,9 @@ import { useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { createPost, updatePost } from '../lib/Posts';
+import { createPost, updatePost } from '@ledathemis/odin-blog-library/Posts';
 import { StyledButton } from '../styled/StyledButton';
-import { ErrorType } from '../typings';
+import { ErrorType } from '@ledathemis/odin-blog-library/typings';
 import Errors from './Errors';
 
 const PostEditor = ({

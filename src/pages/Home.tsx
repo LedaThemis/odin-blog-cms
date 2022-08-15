@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 import ActionButtons from '../components/ActionButtons';
 import Posts from '../components/Posts';
-import { isLoggedIn } from '../lib/Users';
+import { isLoggedIn } from '@ledathemis/odin-blog-library/Users';
 
 const Home = () => {
     return (

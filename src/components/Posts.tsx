@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
-import { deletePost } from '../lib/Posts';
-import { getUserPosts } from '../lib/Users';
-import { ErrorType, PostType, PostsResponse } from '../typings';
+import { deletePost } from '@ledathemis/odin-blog-library/Posts';
+import { getUserPosts } from '@ledathemis/odin-blog-library/Users';
+import { ErrorType, PostType, PostsResponse } from '@ledathemis/odin-blog-library/typings';
 import Errors from './Errors';
 import PreviewPost from './PreviewPost';
 

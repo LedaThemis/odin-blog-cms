@@ -1,10 +1,13 @@
+import { login } from '@ledathemis/odin-blog-library/Users';
+import {
+    AccessResponse,
+    ErrorType,
+} from '@ledathemis/odin-blog-library/typings';
 import { ChangeEvent, FormEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { login } from '../lib/Users';
 import { StyledSubmitButton } from '../styled/StyledSubmitButton';
-import { AccessResponse, ErrorType } from '../typings';
 import Errors from './Errors';
 
 const LoginForm = () => {
