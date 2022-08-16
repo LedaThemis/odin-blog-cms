@@ -1,9 +1,13 @@
+import { deletePost } from '@ledathemis/odin-blog-library/Posts';
+import { getUserPosts } from '@ledathemis/odin-blog-library/Users';
+import {
+    ErrorType,
+    PostType,
+    PostsResponse,
+} from '@ledathemis/odin-blog-library/typings';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
-import { deletePost } from '@ledathemis/odin-blog-library/Posts';
-import { getUserPosts } from '@ledathemis/odin-blog-library/Users';
-import { ErrorType, PostType, PostsResponse } from '@ledathemis/odin-blog-library/typings';
 import Errors from './Errors';
 import PreviewPost from './PreviewPost';
 

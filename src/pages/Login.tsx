@@ -1,8 +1,8 @@
+import { isLoggedIn } from '@ledathemis/odin-blog-library/Users';
 import { Navigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 import LoginForm from '../components/LoginForm';
-import { isLoggedIn } from '@ledathemis/odin-blog-library/Users';
 
 const Login = () => {
     return (

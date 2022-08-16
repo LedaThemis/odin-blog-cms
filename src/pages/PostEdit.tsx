@@ -1,11 +1,11 @@
+import { getPost } from '@ledathemis/odin-blog-library/Posts';
+import { ErrorType, PostType } from '@ledathemis/odin-blog-library/typings';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import Errors from '../components/Errors';
 import PostEditor from '../components/PostEditor';
-import { getPost } from '@ledathemis/odin-blog-library/Posts';
-import { ErrorType, PostType } from '@ledathemis/odin-blog-library/typings';
 
 const PostEdit = () => {
     const [post, setPost] = useState<PostType>();

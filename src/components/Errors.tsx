@@ -1,6 +1,5 @@
-import styled from 'styled-components';
-
 import { ErrorType } from '@ledathemis/odin-blog-library/typings';
+import styled from 'styled-components';
 
 const Errors = ({ errors }: { errors: ErrorType[] }) => {
     return (

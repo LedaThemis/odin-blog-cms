@@ -1,11 +1,11 @@
+import { togglePostPublished } from '@ledathemis/odin-blog-library/Posts';
+import { PostType } from '@ledathemis/odin-blog-library/typings';
 import { useState } from 'react';
 import { BsFillTrashFill, BsPencilFill } from 'react-icons/bs';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { togglePostPublished } from '@ledathemis/odin-blog-library/Posts';
 import { StyledButton } from '../styled/StyledButton';
-import { PostType } from '@ledathemis/odin-blog-library/typings';
 
 interface IPreviewPost {
     post: PostType;

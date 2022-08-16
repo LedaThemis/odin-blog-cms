@@ -1,7 +1,7 @@
+import { isLoggedIn } from '@ledathemis/odin-blog-library/Users';
 import styled from 'styled-components';
 
 import LogoutPrompt from '../components/LogoutPrompt';
-import { isLoggedIn } from '@ledathemis/odin-blog-library/Users';
 
 const Logout = () => {
     return (

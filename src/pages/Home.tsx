@@ -1,8 +1,8 @@
+import { isLoggedIn } from '@ledathemis/odin-blog-library/Users';
 import styled from 'styled-components';
 
 import ActionButtons from '../components/ActionButtons';
 import Posts from '../components/Posts';
-import { isLoggedIn } from '@ledathemis/odin-blog-library/Users';
 
 const Home = () => {
     return (
