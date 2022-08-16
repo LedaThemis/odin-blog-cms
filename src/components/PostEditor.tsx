@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
+import { createPost, updatePost } from '@ledathemis/odin-blog-library/Posts';
+import { ErrorType } from '@ledathemis/odin-blog-library/typings';
 import { Editor } from '@tinymce/tinymce-react';
 import { useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { createPost, updatePost } from '@ledathemis/odin-blog-library/Posts';
 import { StyledButton } from '../styled/StyledButton';
-import { ErrorType } from '@ledathemis/odin-blog-library/typings';
 import Errors from './Errors';
 
 const PostEditor = ({
@@ -40,8 +40,13 @@ const PostEditor = ({
                 if (operation === 'create') {
                     const res = await createPost({ title, content });
 
-                    if (res.state === 'failed') {
-                        setErrors(res.errors);
+                    switch (res.state) {
+                        case 'success':
+                            navigate('/');
+                            break;
+                        case 'failed':
+                            setErrors(res.errors);
+                            break;
                     }
                 } else if (operation === 'update' && postId) {
                     const res = await updatePost({
@@ -50,12 +55,15 @@ const PostEditor = ({
                         id: postId,
                     });
 
-                    if (res.state === 'failed') {
-                        setErrors(res.errors);
+                    switch (res.state) {
+                        case 'success':
+                            navigate('/');
+                            break;
+                        case 'failed':
+                            setErrors(res.errors);
+                            break;
                     }
                 }
-
-                navigate('/');
             })();
         }
     };
